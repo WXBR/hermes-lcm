@@ -537,6 +537,8 @@ class LCMEngine(ContextEngine):
             eligible, reason = self._leaf_compaction_candidate_status(messages)
             if eligible:
                 return True
+            if self._should_run_deferred_maintenance(messages, observed_tokens=rough):
+                return True
             self._last_compression_status = "noop"
             self._last_compression_noop_reason = reason
             logger.info("LCM preflight compression no-op: %s", reason)
